@@ -1,0 +1,34 @@
+{
+  "name": "flutter-bloc-skills",
+  "owner": {
+    "name": "abdallhMoukdad",
+    "url": "https://github.com/abdallhMoukdad"
+  },
+  "metadata": {
+    "description": "Flutter + Bloc state-management skills for Claude Code — setup, feature pattern, async API, real-time streams, testing, and forms. Opinionated toward a Laravel backend."
+  },
+  "plugins": [
+    {
+      "name": "flutter-bloc-skills",
+      "source": "./",
+      "description": "Six proactive skills for production-quality Flutter apps using Bloc — setup, feature scaffolding, async API with typed Failure mapping, real-time streams via emit.forEach, deterministic Bloc tests, and forms with per-field 422 error round-trip. Each skill activates automatically on relevant phrases.",
+      "version": "1.0.0",
+      "author": {
+        "name": "abdallhMoukdad",
+        "url": "https://github.com/abdallhMoukdad"
+      },
+      "category": "framework",
+      "tags": [
+        "flutter",
+        "dart",
+        "bloc",
+        "flutter_bloc",
+        "freezed",
+        "hydrated_bloc",
+        "formz",
+        "state-management",
+        "laravel"
+      ]
+    }
+  ]
+}

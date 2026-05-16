@@ -1,0 +1,26 @@
+{
+  "name": "flutter-bloc-skills",
+  "version": "1.0.0",
+  "description": "Six proactive skills for production-quality Flutter apps using the Bloc pattern with a Laravel backend — setup, feature scaffolding, async API calls with typed Failure mapping, real-time stream tracking, deterministic Bloc tests, and forms with per-field 422 round-trip. Each skill activates automatically on relevant phrases.",
+  "author": {
+    "name": "abdallhMoukdad",
+    "url": "https://github.com/abdallhMoukdad"
+  },
+  "homepage": "https://github.com/abdallhMoukdad/flutter-bloc-skills",
+  "repository": "https://github.com/abdallhMoukdad/flutter-bloc-skills",
+  "license": "MIT",
+  "keywords": [
+    "flutter",
+    "dart",
+    "bloc",
+    "flutter_bloc",
+    "freezed",
+    "bloc_concurrency",
+    "hydrated_bloc",
+    "formz",
+    "bloc_test",
+    "state-management",
+    "laravel",
+    "skills"
+  ]
+}
