@@ -114,8 +114,12 @@ class _InMemoryStorage implements Storage {
   Future<void> delete(String key) async => _map.remove(key);
   @override
   Future<void> clear() async => _map.clear();
+  // The official `Storage` interface declares four required members
+  // (read/write/delete/clear). `close()` isn't in the contract today,
+  // but a no-op makes the fake forward-compatible if a future version
+  // adds it.
   @override
-  Future<void> close() async {} // `Storage` has five members in hydrated_bloc ^10 — don't omit this.
+  Future<void> close() async {}
 }
 
 setUpAll(() {

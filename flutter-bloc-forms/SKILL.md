@@ -84,6 +84,8 @@ The initial state with all-`pure()` inputs is **not** valid — pure inputs whos
 
 **Submission status is independent of validity.** A form can be `FormzSubmissionStatus.inProgress` while `isValid` is true. After a `422`, `status` flips to `failure` but `isValid` may still be true on the client (the server disagreed). Treat them as orthogonal axes.
 
+`formz` exposes a `FormzSubmissionStatusX` extension with convenience getters: `status.isInitial`, `status.isInProgress`, `status.isSuccess`, `status.isFailure`, `status.isCanceled`, and the load-bearing `status.isInProgressOrSuccess` for "keep the submit button disabled while in flight *and* after success until navigation completes". Use them instead of raw `status == FormzSubmissionStatus.inProgress` comparisons.
+
 ## Mapping Laravel 422 errors to fields
 
 When `flutter-bloc-async-api`'s repository returns `Result.failure(Failure.validation(errors))` — the `Failure` taxonomy defined in `flutter-bloc-async-api` — the form Bloc splatters those errors back onto the corresponding inputs.
@@ -180,9 +182,13 @@ import 'package:formz/formz.dart';
 enum EmailValidationError { empty, malformed }
 
 class EmailInput extends FormzInput<String, EmailValidationError> {
-  // `pure` must initialize `serverError` — Dart requires every final field
-  // to be set by every constructor, even when it's nullable.
-  const EmailInput.pure() : serverError = null, super.pure('');
+  // `pure` accepts an optional seed value so an edit-profile screen can
+  // pre-populate the field without making it dirty. `serverError` is always
+  // null for pure inputs (you only get a server error after submitting).
+  // Dart requires every final field to be set by every constructor.
+  const EmailInput.pure([String value = ''])
+      : serverError = null,
+        super.pure(value);
   const EmailInput.dirty([super.value = '', this.serverError]) : super.dirty();
 
   final String? serverError;
@@ -220,7 +226,9 @@ import 'package:formz/formz.dart';
 enum PasswordValidationError { empty, tooShort }
 
 class PasswordInput extends FormzInput<String, PasswordValidationError> {
-  const PasswordInput.pure() : serverError = null, super.pure('');
+  const PasswordInput.pure([String value = ''])
+      : serverError = null,
+        super.pure(value);
   const PasswordInput.dirty([super.value = '', this.serverError]) : super.dirty();
 
   final String? serverError;

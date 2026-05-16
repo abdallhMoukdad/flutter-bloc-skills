@@ -121,7 +121,16 @@ Four widgets bridge a Bloc to the widget tree. Pick the narrowest one that does 
 
 ## Persistence (optional)
 
-For state that must survive a cold start (cart, auth tokens, recently-viewed list), extend `HydratedBloc<E, S>` instead of `Bloc<E, S>`. Override `fromJson` and `toJson` on the Bloc. With `freezed`, the serialization helpers are generated — but **only when the state declares an explicit `factory State.fromJson(...)` factory and the file declares `part 'state.g.dart';`**. See the `CartState` snippet above; missing either of these makes `_$CartStateFromJson` undefined and the file won't compile.
+For state that must survive a cold start (cart, auth tokens, recently-viewed list), extend `HydratedBloc<E, S>` instead of `Bloc<E, S>` — or add `HydratedMixin` to an existing `Cubit`/`Bloc` and call `hydrate()` in its constructor when changing the parent class isn't an option. Override `fromJson` and `toJson` on the Bloc. With `freezed`, the serialization helpers are generated — but **only when the state declares an explicit `factory State.fromJson(...)` factory and the file declares `part 'state.g.dart';`**. See the `CartState` snippet above; missing either of these makes `_$CartStateFromJson` undefined and the file won't compile.
+
+**Always override `storagePrefix`** to a stable string literal:
+
+```dart
+@override
+String get storagePrefix => 'CartBloc';
+```
+
+The default storage key is `runtimeType.toString()`, which gets mangled by Dart's minifier in `flutter build apk --release` / `--obfuscate`. A user upgrading the app would find their persisted cart unreadable because the storage key changed names between builds. Pin the prefix in source so the key survives minification.
 
 ```dart
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -142,6 +151,11 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
   final CartRepository _repo;
 
   // ...handlers (omitted; each emits state.copyWith(...) per business rule)
+
+  // Pin the storage key so release builds (which may minify class names)
+  // continue reading the same persisted state across upgrades.
+  @override
+  String get storagePrefix => 'CartBloc';
 
   @override
   CartState? fromJson(Map<String, dynamic> json) => CartState.fromJson(json);

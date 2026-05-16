@@ -57,6 +57,8 @@ Two app-wide objects belong at the root of the widget tree.
 
 `HydratedBloc.storage` must be initialized **before** `runApp()`; otherwise any `HydratedBloc` constructed during the first frame will crash with `HydratedStorageNotFound`. Use `path_provider` to resolve the storage directory on Android and iOS.
 
+Use `getApplicationDocumentsDirectory()` (durable across app updates and OS reboots), **not** `getTemporaryDirectory()` — the latter can be cleared by the OS without warning, which would silently lose the user's cart on a low-storage device. Some upstream examples use the temp directory because it's faster for one-off demos; for a real app with persisted cart/auth state, the documents directory is the right choice.
+
 ## Project structure
 
 Bloc replaces the `view_models/` directory from `flutter-apply-architecture-best-practices`. The Repository, Service, and Domain Model layers from that skill stay unchanged.
